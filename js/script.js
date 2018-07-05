@@ -38,6 +38,9 @@ function message_croix_rouge(texte) {
 // Si tout est ok .... poursuivre l'action
 
 $(function() {
+  // désactiver le bouton lors de l'initialisation
+  $("#mon_bouton").prop("disabled",true);
+
   $( "#telephone" ).focus(function() {
     // initialisation du message d'aide lors du focus sur l'input
     $('#telephoneAide').html('Exemple : 0668847867');
@@ -47,6 +50,7 @@ $(function() {
     var value = $(this).val();
     if(value == ''){
       // sweetalert2 concernant : Le champs téléphone est vide.
+      $("#mon_bouton").prop("disabled",true);
       afficher_message_alerte('Oops...', 'Veuillez remplir le champs téléphone s\'il vous plaît !');
       // ou bien le message / la croix rouge
       message_croix_rouge('<i style="color:red" class="fas fa-times"></i> Veuillez remplir le champs téléphone s\'il vous plaît !');
@@ -58,19 +62,28 @@ $(function() {
 
       if( taillede10(tel) == false )  {
         // il ne fait pas 10 chiffres de long
+        $("#mon_bouton").prop("disabled",true);
         afficher_message_alerte('Oops...', 'Votre numéro de téléphone ne contient pas 10 chiffres.');
         message_croix_rouge('<i style="color:red" class="fas fa-times"></i> Votre numéro de téléphone ne contient pas 10 chiffres.');
 
       }else {
         if(is06ou07(tel) == false) {
           // il commence pas par 06 ou 07
+          $("#mon_bouton").prop("disabled",true);
           afficher_message_alerte('Oops...', 'Votre numéro de téléphone doit commencer par 06 ou 07');
           message_croix_rouge('<i style="color:red" class="fas fa-times"></i> Votre numéro de téléphone doit commencer par 06 ou 07');
         } else {
           // poursuivre ou ne rien effectuer ici
           message_croix_rouge('<i style="color:green" class="fas fa-check"></i> Exemple : 0668847867');
+          $("#mon_bouton").prop("disabled",false);
+
         }
       }
     }
   });
+
+  $( "#mon_formulaire" ).submit(function() {
+    e.preventDefault();
+  });
+
 });
